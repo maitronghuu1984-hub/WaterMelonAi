@@ -30,13 +30,6 @@ def get_model():
     x = Dense(512, activation='relu')(x)
     outs = Dense(n_class, activation='softmax')(x)
 
-    # Đóng băng các layer của base_model
-    for layer in base_model.layers:
-        layer.trainable = False
-
-    model = Model(inputs=base_model.inputs, outputs=outs)
-    return model
-
 model = get_model()
 model.summary()
 
@@ -67,10 +60,6 @@ validation_generator = train_datagen.flow_from_directory(
     class_mode='categorical',
     subset='validation'
 )
-
-classes = train_generator.class_indices
-print(f"Classes: {classes}")
-classes = list(classes.keys())
 
 # 4. Train model
 model.compile(optimizer=optimizers.SGD(learning_rate=0.01), loss='categorical_crossentropy', metrics=['accuracy'])
